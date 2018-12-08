@@ -9,16 +9,16 @@ namespace Dapper.FluentMap.Dommel.Resolvers
 {
     /// <inheritdoc />
     /// <summary>
-    /// Implements the <see cref="T:Dommel.DommelMapper.IKeyPropertyResolver" /> interface by using the configured mapping.
+    /// Implements the <see cref="T:Dommel.DommelMapper.IIdentityPropertyResolver" /> interface by using the configured mapping.
     /// </summary>
-    public class DommelKeyPropertyResolver : DefaultKeyPropertyResolver
+    public class DommelIdentityPropertyResolver : DefaultIdentityPropertyResolver
     {
         /// <inheritdoc/>
-        public override IEnumerable<PropertyInfo> ResolveKeyProperties(Type type)
+        public override IEnumerable<PropertyInfo> ResolveIdentityProperties(Type type)
         {
             if (!FluentMapper.Configuration.EntityMaps.TryGetValue(type, out var entityMap))
             {
-                return base.ResolveKeyProperties(type);
+                return base.ResolveIdentityProperties(type);
             }
 
             if (entityMap is IDommelEntityMap)
@@ -26,13 +26,13 @@ namespace Dapper.FluentMap.Dommel.Resolvers
                 return entityMap
                     .PropertyMaps
                     .OfType<DommelPropertyMap>()
-                    .Where(m => m.Key)
+                    .Where(m => m.Identity)
                     .Select(m => m.PropertyInfo)
                     .ToArray();
             }
 
             // Fall back to the default mapping strategy.
-            return base.ResolveKeyProperties(type);
+            return base.ResolveIdentityProperties(type);
         }
     }
 }

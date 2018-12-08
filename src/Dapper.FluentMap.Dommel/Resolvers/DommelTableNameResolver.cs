@@ -4,15 +4,14 @@ using static Dommel.DommelMapper;
 
 namespace Dapper.FluentMap.Dommel.Resolvers
 {
+    /// <inheritdoc />
     /// <summary>
-    /// Implements the <see cref="ITableNameResolver"/> interface by using the configured mapping.
+    /// Implements the <see cref="T:Dommel.DommelMapper.ITableNameResolver" /> interface by using the configured mapping.
     /// </summary>
-    public class DommelTableNameResolver : ITableNameResolver
+    public class DommelTableNameResolver : DefaultTableNameResolver
     {
-        private static readonly DefaultTableNameResolver _defaultTableNameResolver = new DefaultTableNameResolver();
-
         /// <inheritdoc />
-        public string ResolveTableName(Type type)
+        public override string ResolveTableName(Type type)
         {
             if (FluentMapper.Configuration.EntityMaps.TryGetValue(type, out var entityMap) &&
                 entityMap is IDommelEntityMap mapping)
@@ -20,7 +19,7 @@ namespace Dapper.FluentMap.Dommel.Resolvers
                 return mapping.TableName;
             }
 
-            return _defaultTableNameResolver.ResolveTableName(type);
+            return base.ResolveTableName(type);
         }
     }
 }

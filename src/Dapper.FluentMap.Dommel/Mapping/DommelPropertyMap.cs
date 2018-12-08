@@ -19,7 +19,12 @@ namespace Dapper.FluentMap.Dommel.Mapping
         /// <summary>
         /// Gets or sets a value indicating whether the current property is considered a key property.
         /// </summary>
-        public bool Key { get; set; }
+        public bool Key { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether this primary key is an identity.
+        /// </summary>
+        public bool Identity { get; private set; }
 
         /// <summary>
         /// Marks the property as a key property.
@@ -27,6 +32,16 @@ namespace Dapper.FluentMap.Dommel.Mapping
         public DommelPropertyMap IsKey()
         {
             Key = true;
+            return this;
+        }
+
+        /// <summary>
+        /// Specifies the current property as an identity.
+        /// </summary>
+        /// <returns>The current instance of <see cref="DommelPropertyMap"/>.</returns>
+        public DommelPropertyMap IsIdentity()
+        {
+            Identity = true;
             return this;
         }
     }
@@ -44,6 +59,19 @@ namespace Dapper.FluentMap.Dommel.Mapping
             if (propertyMapping is DommelPropertyMap dommelPropertyMapping)
             {
                 dommelPropertyMapping.IsKey();
+            }
+
+            return propertyMapping;
+        }
+
+        /// <summary>
+        /// Marks the property as an identity property.
+        /// </summary>
+        public static PropertyMap IsIdentity(this PropertyMap propertyMapping)
+        {
+            if (propertyMapping is DommelPropertyMap dommelPropertyMapping)
+            {
+                dommelPropertyMapping.IsIdentity();
             }
 
             return propertyMapping;
