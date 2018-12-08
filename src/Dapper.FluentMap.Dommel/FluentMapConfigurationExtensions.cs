@@ -14,7 +14,7 @@ namespace Dapper.FluentMap.Dommel
         /// </summary>
         /// <param name="config">The Dapper.FluentMap configuration.</param>
         /// <returns>The Dapper.FluentMap configuration.</returns>
-        public static FluentMapConfiguration ForDommel(this FluentMapConfiguration config)
+        public static IMappingConfiguration ForDommel(this IMappingConfiguration config)
         {
             DommelMapper.SetColumnNameResolver(new DommelColumnNameResolver());
             DommelMapper.SetKeyPropertyResolver(new DommelKeyPropertyResolver());
