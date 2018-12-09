@@ -54,7 +54,7 @@ namespace Dapper.FluentMap.Mapping
         /// <returns>A <see cref="IReadOnlyDictionary{TKey, TValue}"/> which represents the mapping.</returns>
         public IReadOnlyDictionary<string, PropertyInfo> Compile()
         {
-            var mapping = PropertyMaps.ToDictionary(m => m.ColumnName, m => m.PropertyInfo, CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
+            var mapping = PropertyMaps.Where(m => !string.IsNullOrEmpty(m.ColumnName)).ToDictionary(m => m.ColumnName, m => m.PropertyInfo, CaseSensitive ? StringComparer.Ordinal : StringComparer.OrdinalIgnoreCase);
             return new ReadOnlyDictionary<string, PropertyInfo>(mapping);
         }
 

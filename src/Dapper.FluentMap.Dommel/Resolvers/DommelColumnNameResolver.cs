@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using Dommel;
 using static Dommel.DommelMapper;
 
 namespace Dapper.FluentMap.Dommel.Resolvers
@@ -19,7 +18,7 @@ namespace Dapper.FluentMap.Dommel.Resolvers
                 if (FluentMapper.Configuration.EntityMaps.TryGetValue(propertyInfo.ReflectedType ?? throw new InvalidOperationException(), out var entityMap))
                 {
                     var propertyMap = entityMap.PropertyMaps.FirstOrDefault(m => m.PropertyInfo.Name == propertyInfo.Name);
-                    if (propertyMap != null)
+                    if (propertyMap != null && !string.IsNullOrEmpty(propertyMap.ColumnName))
                     {
                         return propertyMap.ColumnName;
                     }
