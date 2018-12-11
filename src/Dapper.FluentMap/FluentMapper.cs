@@ -32,9 +32,14 @@ namespace Dapper.FluentMap
                 throw new ArgumentNullException(nameof(configure));
             }
 
-            Configuration = new FluentMapConfiguration();
+            if (_configuration == null)
+            {
+                Configuration = new FluentMapConfiguration();
+
+                SqlMapper.TypeMapProvider = t => new FluentTypeMap(t, Configuration.EntityMaps[t].Compile());
+            }
+            
             configure(Configuration);
-            SqlMapper.TypeMapProvider = t => new FluentTypeMap(t, Configuration.EntityMaps[t].Compile());
 
             return Configuration;
         }
