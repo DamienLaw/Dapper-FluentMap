@@ -36,7 +36,15 @@ namespace Dapper.FluentMap
             {
                 Configuration = new FluentMapConfiguration();
 
-                SqlMapper.TypeMapProvider = t => new FluentTypeMap(t, Configuration.EntityMaps[t].Compile());
+                SqlMapper.TypeMapProvider = t =>
+                {
+                    if (Configuration.EntityMaps.TryGetValue(t, out var entityMap))
+                    {
+                        return new FluentTypeMap(t, entityMap.Compile());
+                    }
+                    
+                    return new DefaultTypeMap(t);
+                };
             }
             
             configure(Configuration);
